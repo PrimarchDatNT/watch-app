@@ -77,6 +77,10 @@ P2_EXPLANATIONS = True
 P3_EXPLANATIONS = True
 FOLLOW_EXPLANATIONS = True
 
+# Writing samples: the watch can't colour part of a line, so every red template phrase started a new line
+# and cut sentences apart. User (2026-11-03): one colour, paragraphs as written. True restores the red phrases.
+WRITING_FRAMES = False
+
 # Opening greeting shown at the top of the first Part 1 page of every speaking exam:
 # fixed phrases in the frame colour (red), the personal details as answer (green).
 # The candidate's opener on the follow-up page, in the frame colour (red).
@@ -311,12 +315,16 @@ def mark_frame(text: str, phrases: list) -> list:
 
 
 def framed_paragraphs(paragraphs: list, phrases: list) -> str:
-    """Sample text with template phrases red (#F) and content green (#A); blank line between paragraphs."""
+    """Sample text, blank line between paragraphs: each paragraph whole in green (#A), or with WRITING_FRAMES
+    split into template phrases red (#F) and content green (#A)."""
     out = []
     for para in paragraphs:
         if out:
             out.append("")
-        out += [(FRAME_MARK if f else ANSWER_MARK) + s for f, s in mark_frame(clean(para), phrases)]
+        if WRITING_FRAMES:
+            out += [(FRAME_MARK if f else ANSWER_MARK) + s for f, s in mark_frame(clean(para), phrases)]
+        else:
+            out.append(ANSWER_MARK + clean(para))
     return "\n".join(out)
 
 
@@ -463,7 +471,7 @@ def writing_title_t2(essay: list) -> str:
 
 def writing_item(exam: dict, phrases: dict) -> dict:
     """One page per Task 1 email sample (the key has two), then the essay, like Speaking's "Đề + đáp án":
-    the short task (blue) then the full sample with its template phrases red and the content green.
+    the short task (blue) then the full sample in green (template phrases red only with WRITING_FRAMES).
     No tips/explanations (user asked)."""
     t1, t2 = exam["t1"], exam["t2"]
     task1 = QUESTION_MARK + simple_task1(t1["prompt"])
