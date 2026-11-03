@@ -19,7 +19,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "watch/entry/src/main/js/MainAbility/common/content.js"
-MAX_CHARS = 1100
 
 # Characters the watch font may not have -> plain equivalents.
 REPLACE = {
@@ -71,10 +70,10 @@ QUESTION_MARK = "#Q "
 ANSWER_MARK = "#A "
 
 # Explanations per speaking section (user's choices):
-#   Part 2      no  — drop the "(đưa ra lời giải thích)" BECAUSE-reasons
+#   Part 2      yes — the full sample with its "(đưa ra lời giải thích)" BECAUSE-reasons, as in the key
 #   Part 3      yes — the main talk stays complete, like a reading passage (ideas + their development)
 #   Follow-up   yes — complete answers (set False to drop "because …", kept for "Why …?" questions)
-P2_EXPLANATIONS = False
+P2_EXPLANATIONS = True
 P3_EXPLANATIONS = True
 FOLLOW_EXPLANATIONS = True
 
@@ -215,13 +214,6 @@ def cut(s: str, n: int) -> str:
         return s
     sp = s.rfind(" ", 0, n - 3)
     return s[: sp if sp > n // 2 else n - 3].rstrip(",;: ") + "..."
-
-
-def cap(text: str) -> str:
-    if len(text) <= MAX_CHARS:
-        return text
-    nl = text.rfind("\n", 0, MAX_CHARS - 4)
-    return text[: nl if nl > 0 else MAX_CHARS - 4] + "\n..."
 
 
 def extract_js_array(html: str, name: str) -> list:
@@ -413,7 +405,7 @@ def question_qa(q: dict, frames: list) -> str:
 
 def quiz_item(exam: dict, sub: str, frames: list) -> dict:
     """Only the original exam questions (sections without the site's `extra` flag), all on ONE
-    scrollable page (the user wants the 20 questions at once, not split) — so no MAX_CHARS cap here."""
+    scrollable page (the user wants the 20 questions at once, not split)."""
     qs = [q for s in exam["sections"] if not s.get("extra") for q in s["questions"]]
     text = "\n\n".join(question_qa(q, frames) for q in qs)
     return {"title": f'Đề {exam["id"]}', "sub": f"{len(qs)} câu - {sub}", "pages": [{"label": "", "text": text}]}
@@ -429,7 +421,8 @@ def essay_prompt(lines: list) -> str:
 
 
 def page(label: str, text: str) -> dict:
-    return {"label": label, "text": cap(text)}
+    """A section page. Never truncated: the watch page scrolls, and answers must stay complete."""
+    return {"label": label, "text": text}
 
 
 def first_sentence(text: str) -> str:
@@ -467,7 +460,7 @@ def writing_title_t2(essay: list) -> str:
 
 def writing_item(exam: dict, phrases: dict) -> dict:
     """Two pages, like Speaking's "Đề + đáp án": the short task (blue) then the full sample with its
-    template phrases red and the content green. No MAX_CHARS cap — the sample must stay complete.
+    template phrases red and the content green.
     No tips/explanations (user asked)."""
     t1, t2 = exam["t1"], exam["t2"]
     task1 = [QUESTION_MARK + simple_task1(t1["prompt"])]
