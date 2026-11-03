@@ -7,7 +7,7 @@ The site embeds everything in one inline script as `const D = {...}` (JSON). The
 RAM per app, so only what the user wants on the wrist is kept (no explanations, tips or notes):
   Đọc / Nghe  the 20 original questions (non-`extra` sections) + the document's answer, one page
   Viết        T1 prompt, T1 sample email, T2 prompt, T2 sample essay (paged)
-  Nói         P1 Q/A per topic, P2 task summary + sample answer (template frame marked), P3 sample, P3 follow-up Q/A
+  Nói         P1 Q/A per topic, P2 task + sample answer (template frame marked), P3 topic + sample, P3 follow-up Q/A
 Paragraph prefixes #Q / #A / #F mark question (blue), answer (green) and template frame (red) on the watch.
 """
 import json
@@ -79,6 +79,9 @@ FOLLOW_EXPLANATIONS = True
 
 # Opening greeting shown at the top of the first Part 1 page of every speaking exam:
 # fixed phrases in the frame colour (red), the personal details as answer (green).
+# The candidate's opener on the follow-up page, in the frame colour (red).
+FOLLOW_OPENER = "Now, I am going to answer the follow-up questions."
+
 SPEAKER_NAME = "Nguyen Thanh Dat"
 SPEAKER_HOMETOWN = "Ha Noi"
 GREETING = [
@@ -479,32 +482,26 @@ def writing_item(exam: dict, phrases: dict) -> dict:
     return {"title": f'Đề {exam["id"]}', "sub": sub, "pages": pages}
 
 
-def p2_summary(p2: dict, expl: dict) -> str:
-    """Short task summary for Part 2: the Vietnamese 'Tình huống: …' line of the site's analysis
-    (without its 'Bài mẫu chọn …' spoiler); fallback = first sentence of the situation + the options."""
-    for a in (expl or {}).get("p2", {}).get("analysis", []):
-        a = clean(a)
-        if a.startswith("Tình huống"):
-            return re.split(r"\s*Bài mẫu chọn", a)[0].strip()
-    first = re.split(r"(?<=[.?!])\s", clean(p2["situation"]))[0]
-    opts = "; ".join(f"({i + 1}) {clean(o)}" for i, o in enumerate(p2.get("options", [])))
-    return f"{first} {opts}".strip()
+def p2_task(p2: dict) -> str:
+    """Part 2 task as written in the exam, in English (user: no Vietnamese summary): the situation,
+    then its three options as "- …" lines, all question blue."""
+    lines = [f"{QUESTION_MARK}Situation: {clean(p2['situation'])}"]
+    lines += [f"{QUESTION_MARK}- {clean(o)}" for o in p2.get("options", [])]
+    return "\n".join(lines)
 
 
 def p3_task(p3: dict, expl: dict) -> str:
-    """Part 3 task as shown in the exam: the topic + the mind map's suggested branches (without the
-    'Your own ideas' branch), both as question lines."""
+    """Part 3 task as shown in the exam, in English: the topic + the mind map's three main points
+    (without the 'Your own ideas' branch), all question blue."""
     lines = [f"{QUESTION_MARK}Topic: {clean(p3['topic'])}"]
     ideas = [clean(x.get("idea", "")) for x in (expl or {}).get("p3", {}).get("ideas", [])]
-    ideas = [i for i in ideas if i and "own idea" not in i.lower()]
-    if ideas:
-        lines.append(f"{QUESTION_MARK}Gợi ý: {', '.join(ideas)}")
+    lines += [f"{QUESTION_MARK}- {i}" for i in ideas if i and "own idea" not in i.lower()]
     return "\n".join(lines)
 
 
 def speaking_item(exam: dict, expl: dict = None) -> dict:
-    """Sections: one Q&A page per Part 1 topic (the first one opens with the greeting), P2 task summary +
-    sample, P3 sample, P3 follow-up Q&A."""
+    """Sections: one Q&A page per Part 1 topic (the first one opens with the greeting), P2 task (English) +
+    sample, P3 topic + main points + sample, P3 follow-up Q&A (opened by FOLLOW_OPENER)."""
     pages = []
     greeting = "\n".join((FRAME_MARK if frame else ANSWER_MARK) + text for frame, text in GREETING)
     for i, topic in enumerate(exam["p1"]):
@@ -515,10 +512,10 @@ def speaking_item(exam: dict, expl: dict = None) -> dict:
         if i == 0:
             body = greeting + "\n\n" + body
         pages.append(page(f"P1: {name}", body))
-    # Part 2 on one page: a short task summary (blue), then the sample answer (green) with its
-    # template frame (red). The full English situation/options are not shown (user asked for a summary).
+    # Part 2 on one page: the original English task (blue), then the sample answer (green) with its
+    # template frame (red).
     p2 = exam["p2"]
-    task = QUESTION_MARK + p2_summary(p2, expl)
+    task = p2_task(p2)
     answer = framed_sample(p2.get("template", []), p2.get("sample", []), ANSWER_MARK,
                            None if P2_EXPLANATIONS else p2_trim)
     # titled by its topic like "P1: Sports": the situation's first sentence (no short topic exists for P2)
@@ -534,7 +531,8 @@ def speaking_item(exam: dict, expl: dict = None) -> dict:
     if p3.get("follow"):
         follow = [(f["q"], f["a"] if FOLLOW_EXPLANATIONS else drop_reason(f["q"], clean(strip_ipa(f["a"]))))
                   for f in p3["follow"]]
-        pages.append(page("P3: Hỏi thêm", "\n\n".join(qa(q, a) for q, a in follow)))
+        body = FRAME_MARK + FOLLOW_OPENER + "\n\n" + "\n\n".join(qa(q, a) for q, a in follow)
+        pages.append(page("P3: Follow-up questions", body))
     return {"title": f'Đề {exam["id"]}', "sub": "Part 3: " + cut(p3["topic"], 40), "pages": pages}
 
 
