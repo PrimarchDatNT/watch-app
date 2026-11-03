@@ -4,15 +4,21 @@ import { wrapText } from '../../common/wrap.js';
 
 // NOTE: lite page methods must not be named render/show/subscribe (render is the compiled template).
 
-// Section titles get up to two lines in the menu: 268px text at 30px font ≈ 8.9em, minus a safety margin.
-const TOC_LINE_EM = 8.5;
+// Menu titles (keep in sync with .toc-line in exam.css): 276px lines at 22px ≈ 12.5em, minus a safety
+// margin for the width estimate. Up to TOC_MAX_LINES lines, so every title in content.js fits whole.
+const TOC_FONT_PX = 22;
+const TOC_LINE_PX = 28;
+const TOC_LINE_EM = 276 / TOC_FONT_PX * 0.95;
+const TOC_MAX_LINES = 5;
+const TOC_MIN_ROW_PX = 64; // keeps short rows an easy tap target
+const TOC_GAP_PX = 10;
 
 export default {
     data: {
         cat: 0,  // router params
         item: 0,
         header: '',
-        rows: [] // {one, two, l1, l2}: one-line or two-line title (lite can't bind height, so both are fixed)
+        rows: [] // {n, l1..l5, rh, ih}: title lines, row height, list-item height (rh + gap)
     },
 
     onInit() {
@@ -21,13 +27,18 @@ export default {
         this.header = '< ' + c.name + ' - ' + exam.title;
         const rows = [];
         for (let i = 0; i < exam.pages.length; i++) {
-            const lines = wrapText(exam.pages[i].label, TOC_LINE_EM);
-            if (lines.length <= 1) {
-                rows.push({ one: true, two: false, l1: lines.length ? lines[0] : '', l2: '' });
-            } else {
-                // the rest goes on line 2; text-overflow: ellipsis cuts it with "…" if still too long
-                rows.push({ one: false, two: true, l1: lines[0], l2: lines.slice(1).join(' ') });
+            let lines = wrapText(exam.pages[i].label, TOC_LINE_EM);
+            if (lines.length > TOC_MAX_LINES) {
+                // longer than the row allows: the rest joins the last line, which ellipsizes with "…"
+                lines = lines.slice(0, TOC_MAX_LINES - 1).concat([lines.slice(TOC_MAX_LINES - 1).join(' ')]);
             }
+            const rh = Math.max(TOC_MIN_ROW_PX, lines.length * TOC_LINE_PX + 20);
+            rows.push({
+                n: lines.length,
+                l1: lines[0] || '', l2: lines[1] || '', l3: lines[2] || '', l4: lines[3] || '', l5: lines[4] || '',
+                rh: rh,
+                ih: rh + TOC_GAP_PX
+            });
         }
         this.rows = rows;
     },

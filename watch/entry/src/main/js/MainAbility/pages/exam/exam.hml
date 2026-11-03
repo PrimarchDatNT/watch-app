@@ -1,15 +1,16 @@
 <!-- Exam table of contents: "< skill - Đề N" header (back) + scrollable list of sections.
-     Each row has room for a two-line title; short titles use one centred line. -->
+     Each row shows the whole title on 1–5 lines; the row's height follows its line count
+     (lite can't bind `class`, so the heights are bound through inline style). -->
 <div class="root" onswipe="onSwipe">
     <text class="back" onclick="goBack">{{ header }}</text>
     <list class="toc">
-        <list-item class="toc-item" for="{{ rows }}">
-            <div class="toc-row" onclick="openSection($idx)">
-                <text class="toc-text" if="{{ $item.one }}">{{ $item.l1 }}</text>
-                <div class="toc-two" if="{{ $item.two }}">
-                    <text class="toc-line">{{ $item.l1 }}</text>
-                    <text class="toc-line">{{ $item.l2 }}</text>
-                </div>
+        <list-item class="toc-item" for="{{ rows }}" style="height: {{ $item.ih }}px;">
+            <div class="toc-row" style="height: {{ $item.rh }}px;" onclick="openSection($idx)">
+                <text class="toc-line" if="{{ $item.n > 0 }}">{{ $item.l1 }}</text>
+                <text class="toc-line" if="{{ $item.n > 1 }}">{{ $item.l2 }}</text>
+                <text class="toc-line" if="{{ $item.n > 2 }}">{{ $item.l3 }}</text>
+                <text class="toc-line" if="{{ $item.n > 3 }}">{{ $item.l4 }}</text>
+                <text class="toc-line" if="{{ $item.n > 4 }}">{{ $item.l5 }}</text>
             </div>
         </list-item>
     </list>
