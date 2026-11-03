@@ -40,15 +40,16 @@
     margin-top: 4px;
 }
 
+/* body text 24px (BODY_FONT_PX in detail.js), 32px per line */
 .line-item {
     width: 320px;
-    height: 42px;
+    height: 32px;
 }
 
 .line {
     width: 320px;
-    height: 42px;
-    font-size: 30px;
+    height: 32px;
+    font-size: 24px;
     text-align: left;
     text-overflow: clip;
     color: #ffffff;

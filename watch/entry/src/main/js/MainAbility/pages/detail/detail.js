@@ -6,8 +6,10 @@ import { goHome, goList, goDetail, goExam } from '../../common/nav.js';
 
 // NOTE: lite page methods must not be named render/show/subscribe (render is the compiled template).
 
-// Lines are 300px wide at 30px font = 10em (list is 320px; the rest is margin for the width estimate).
-const LINE_EM = 10;
+// Body text size (keep in sync with .line / .line-item in detail.css). Lines are 300px wide:
+// 300px / 24px = 12.5em (list is 320px; the rest is margin for the width estimate).
+const BODY_FONT_PX = 24;
+const LINE_EM = 300 / BODY_FONT_PX;
 
 export default {
     data: {
