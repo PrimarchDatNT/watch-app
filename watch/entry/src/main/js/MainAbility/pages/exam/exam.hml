@@ -1,0 +1,16 @@
+<!-- Exam table of contents: "< skill - Đề N" header (back) + scrollable list of sections.
+     Each row has room for a two-line title; short titles use one centred line. -->
+<div class="root" onswipe="onSwipe">
+    <text class="back" onclick="goBack">{{ header }}</text>
+    <list class="toc">
+        <list-item class="toc-item" for="{{ rows }}">
+            <div class="toc-row" onclick="openSection($idx)">
+                <text class="toc-text" if="{{ $item.one }}">{{ $item.l1 }}</text>
+                <div class="toc-two" if="{{ $item.two }}">
+                    <text class="toc-line">{{ $item.l1 }}</text>
+                    <text class="toc-line">{{ $item.l2 }}</text>
+                </div>
+            </div>
+        </list-item>
+    </list>
+</div>

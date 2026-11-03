@@ -1,0 +1,31 @@
+# --- secrets / personal signing material: never commit (see signing/README.md) ---
+signing/*
+!signing/README.md
+*.p12
+*.cer
+*.p7b
+*.csr
+
+# --- machine-specific ---
+local.properties
+.DS_Store
+.idea/
+*.iml
+
+# --- tool caches ---
+__pycache__/
+.hvigor/
+
+# --- watch (DevEco / hvigor) build output ---
+watch/build/
+watch/entry/build/
+watch/oh_modules/
+watch/entry/oh_modules/
+watch/.preview/
+watch/entry/.preview/
+
+# --- phone (Gradle) build output ---
+phone/.gradle/
+phone/.kotlin/
+phone/build/
+phone/app/build/

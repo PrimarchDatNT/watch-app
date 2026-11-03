@@ -1,0 +1,16 @@
+{
+  "strings": {
+    "waiting": "Waiting for phone...",
+    "updated": "Updated",
+    "error": "Error",
+    "noMessaging": "Messaging unavailable",
+    "fromPhone": "Phone",
+    "tapNext": "Tap for next",
+    "watch": "Watch",
+    "battery": "Battery",
+    "home": "Home",
+    "next": "Next",
+    "page": "Page",
+    "toc": "Contents"
+  }
+}

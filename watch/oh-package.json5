@@ -1,0 +1,8 @@
+{
+  "modelVersion": "6.1.1",
+  "description": "GT Push - lite wearable app for Huawei Watch GT 6 Pro that shows data pushed from the phone.",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

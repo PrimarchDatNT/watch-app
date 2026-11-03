@@ -1,0 +1,16 @@
+{
+  "strings": {
+    "waiting": "等待手机...",
+    "updated": "已更新",
+    "error": "错误",
+    "noMessaging": "消息不可用",
+    "fromPhone": "手机",
+    "tapNext": "点击查看下一条",
+    "watch": "手表",
+    "battery": "电量",
+    "home": "首页",
+    "next": "下一条",
+    "page": "页",
+    "toc": "目录"
+  }
+}

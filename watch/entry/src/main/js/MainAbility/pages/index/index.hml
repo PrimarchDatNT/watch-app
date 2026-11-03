@@ -1,0 +1,25 @@
+<!-- Home: clock + 2x2 skill tiles (Đọc / Nghe / Viết / Nói) (+ last phone message, if any). -->
+<div class="root">
+    <text class="clock">{{ clock }}</text>
+    <div class="row">
+        <div class="tile tile0" onclick="openCat0">
+            <image class="tile-icon" src="/common/images/reading.png"></image>
+            <text class="tile-name">{{ name0 }}</text>
+        </div>
+        <div class="tile tile1" onclick="openCat1">
+            <image class="tile-icon" src="/common/images/listening.png"></image>
+            <text class="tile-name">{{ name1 }}</text>
+        </div>
+    </div>
+    <div class="row row2">
+        <div class="tile tile2" onclick="openCat2">
+            <image class="tile-icon" src="/common/images/writing.png"></image>
+            <text class="tile-name">{{ name2 }}</text>
+        </div>
+        <div class="tile tile3" onclick="openCat3">
+            <image class="tile-icon" src="/common/images/speaking.png"></image>
+            <text class="tile-name">{{ name3 }}</text>
+        </div>
+    </div>
+    <text class="phone" if="{{ hasPhone }}" onclick="openPhone">{{ phoneLine }}</text>
+</div>

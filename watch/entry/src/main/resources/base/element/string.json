@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "AppNote watch module"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "VSTEP notes: questions and sample answers on the wrist"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "AppNote"
+    }
+  ]
+}

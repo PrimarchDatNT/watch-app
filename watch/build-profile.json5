@@ -1,0 +1,58 @@
+{
+  "app": {
+    // Debug signing (AGC cert/profile valid until 2026-11-17). Passwords are encrypted with ../signing/material.
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "../signing/watch-debug.cer",
+          "storePassword": "00000024eb965b48531a8ef0f98010da03d17abbf6aecd68312ccf92bc72fae31f33776ac4ba2db65a9c819b2ed3ae288838d0f3",
+          "keyAlias": "watchdebug",
+          "keyPassword": "00000024d7df354d9f38fe88260bb370e833460612b6882313d66310394d498bf6a1a2abb3ef4f24987081c6fa0b0a4fdf8086e6",
+          "profile": "../signing/watch-debug.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "../signing/watch-debug.p12"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "6.1.1(24)",
+        // Lowest version the [Lite]Empty Ability template supports, so the HAP installs on any lite watch >= API 10.
+        "compatibleSdkVersion": "4.0.0(10)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": false
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

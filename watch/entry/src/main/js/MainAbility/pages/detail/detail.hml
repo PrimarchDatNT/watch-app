@@ -1,0 +1,17 @@
+<!-- Detail: "< category" header (back), title, scrollable paragraph, "n/3  Tiếp >" footer. -->
+<div class="root" onswipe="onSwipe">
+    <div class="head">
+        <text class="back" onclick="goBack">{{ header }}</text>
+        <text class="title">{{ title }}</text>
+    </div>
+    <list class="lines">
+        <list-item class="line-item" for="{{ lines }}">
+            <!-- $item = {t, q, a, f, n}: lite can't bind `class`, so one fixed-colour text is shown per kind -->
+            <text class="line line-q" if="{{ $item.q }}">{{ $item.t }}</text>
+            <text class="line line-a" if="{{ $item.a }}">{{ $item.t }}</text>
+            <text class="line line-f" if="{{ $item.f }}">{{ $item.t }}</text>
+            <text class="line" if="{{ $item.n }}">{{ $item.t }}</text>
+        </list-item>
+    </list>
+    <text class="foot" onclick="goNext">{{ footer }}</text>
+</div>

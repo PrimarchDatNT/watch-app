@@ -1,0 +1,78 @@
+/* Layout (y): header 34–124, list 128–398, footer 402–438. The list is 320px wide; at its
+   lowest line the round screen is still ~330px wide, so lines are never cut by the edge. */
+.root {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000000;
+}
+
+.head {
+    width: 320px;
+    height: 90px;
+    margin-top: 34px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.back {
+    width: 300px;
+    height: 44px;
+    font-size: 30px;
+    text-align: center;
+    text-overflow: ellipsis;
+    color: #8a8a8a;
+}
+
+.title {
+    width: 320px;
+    height: 44px;
+    font-size: 30px;
+    text-align: center;
+    text-overflow: ellipsis;
+    color: #5ac8fa;
+}
+
+.lines {
+    width: 320px;
+    height: 270px;
+    margin-top: 4px;
+}
+
+.line-item {
+    width: 320px;
+    height: 42px;
+}
+
+.line {
+    width: 320px;
+    height: 42px;
+    font-size: 30px;
+    text-align: left;
+    text-overflow: clip;
+    color: #ffffff;
+}
+
+/* question lines (Q: ...) and sample-answer lines (A: ...) */
+.line-q {
+    color: #5ac8fa;
+}
+
+.line-a {
+    color: #8fe3a6;
+}
+
+/* fixed template frame of a P2/P3 sample answer ("My situation is", "I choose this BECAUSE", ...) */
+.line-f {
+    color: #ff6961;
+}
+
+.foot {
+    width: 300px;
+    height: 36px;
+    margin-top: 4px;
+    font-size: 30px;
+    text-align: center;
+    color: #8a8a8a;
+}

@@ -1,0 +1,16 @@
+<!-- Category: "< name" header (back to home) + its 3 notes. -->
+<div class="root" onswipe="onSwipe">
+    <text class="back" onclick="goBack">{{ header }}</text>
+    <div class="row" onclick="openItem0">
+        <text class="row-title">{{ title0 }}</text>
+        <text class="row-preview">{{ preview0 }}</text>
+    </div>
+    <div class="row" onclick="openItem1">
+        <text class="row-title">{{ title1 }}</text>
+        <text class="row-preview">{{ preview1 }}</text>
+    </div>
+    <div class="row" onclick="openItem2">
+        <text class="row-title">{{ title2 }}</text>
+        <text class="row-preview">{{ preview2 }}</text>
+    </div>
+</div>
