@@ -81,9 +81,13 @@ FOLLOW_EXPLANATIONS = True
 # and cut sentences apart. User (2026-11-03): one colour, paragraphs as written. True restores the red phrases.
 WRITING_FRAMES = False
 
+# Speaking P2/P3 sample answers, same reason: one colour (green), one sentence per paragraph as in the key.
+# True restores the red template frame. Also colours the follow-up opener (red frame vs green answer).
+SPEAKING_FRAMES = False
+
 # Opening greeting shown at the top of the first Part 1 page of every speaking exam:
 # fixed phrases in the frame colour (red), the personal details as answer (green).
-# The candidate's opener on the follow-up page, in the frame colour (red).
+# The candidate's opener on the follow-up page (red with SPEAKING_FRAMES, else green like the answers).
 FOLLOW_OPENER = "Now, I am going to answer the follow-up questions."
 
 SPEAKER_NAME = "Nguyen Thanh Dat"
@@ -186,7 +190,8 @@ def p3_trim(tpl: str, s: str) -> str:
 
 
 def framed_sample(templates: list, samples: list, content_mark: str = "", trim=None) -> str:
-    """Sample answer with its template frame marked: one paragraph per segment, blank line per sentence.
+    """Sample answer, blank line per sentence; with SPEAKING_FRAMES each sentence is split into its template
+    frame and content (one paragraph per segment).
     Frame segments get FRAME_MARK, the filled-in content gets content_mark. trim(template, sentence)
     may shorten a sentence first (used to drop explanations)."""
     out = []
@@ -195,7 +200,7 @@ def framed_sample(templates: list, samples: list, content_mark: str = "", trim=N
         tpl = templates[k] if k < len(templates) else ""
         if trim and tpl:
             s = trim(tpl, s)
-        segs = frame_segments(tpl, s) if tpl else [(False, s)]
+        segs = frame_segments(tpl, s) if (tpl and SPEAKING_FRAMES) else [(False, s)]
         if out:
             out.append("")
         out += [(FRAME_MARK + t) if f else (content_mark + t) for f, t in segs]
@@ -539,7 +544,7 @@ def speaking_item(exam: dict, expl: dict = None) -> dict:
     if p3.get("follow"):
         follow = [(f["q"], f["a"] if FOLLOW_EXPLANATIONS else drop_reason(f["q"], clean(strip_ipa(f["a"]))))
                   for f in p3["follow"]]
-        body = FRAME_MARK + FOLLOW_OPENER + "\n\n" + "\n\n".join(qa(q, a) for q, a in follow)
+        body = (FRAME_MARK if SPEAKING_FRAMES else ANSWER_MARK) + FOLLOW_OPENER + "\n\n" + "\n\n".join(qa(q, a) for q, a in follow)
         pages.append(page("P3: Follow-up questions", body))
     return {"title": f'Đề {exam["id"]}', "sub": "Part 3: " + cut(p3["topic"], 40), "pages": pages}
 
