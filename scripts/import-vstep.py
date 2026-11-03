@@ -82,8 +82,12 @@ FOLLOW_EXPLANATIONS = True
 WRITING_FRAMES = False
 
 # Speaking P2/P3 sample answers, same reason: one colour (green), one sentence per paragraph as in the key.
-# True restores the red template frame. Also colours the follow-up opener (red frame vs green answer).
+# True restores the red template frame. Also colours the follow-up opener and the P1 greeting.
 SPEAKING_FRAMES = False
+
+# Reading/Listening questions, same reason: the whole numbered question in blue on its own paragraph.
+# True restores the red question-type frame ("The word", "is closest in meaning to", ...).
+QUIZ_FRAMES = False
 
 # Opening greeting shown at the top of the first Part 1 page of every speaking exam:
 # fixed phrases in the frame colour (red), the personal details as answer (green).
@@ -216,8 +220,10 @@ def drop_reason(question: str, answer: str) -> str:
     return s if s.endswith((".", "!", "?")) else s + "."
 
 
-def qa(q: str, a: str) -> str:
-    return f"Q: {clean(strip_ipa(q))}\nA: {clean(strip_ipa(a))}"
+def qa(n: int, q: str, a: str) -> str:
+    """Speaking Q&A as in the key: "1. <question>" (blue), then the answer as the candidate says it,
+    "Question 1: <answer>" (green). No visible Q:/A: prefixes (user asked)."""
+    return f"{QUESTION_MARK}{n}. {clean(strip_ipa(q))}\n{ANSWER_MARK}Question {n}: {clean(strip_ipa(a))}"
 
 
 def cut(s: str, n: int) -> str:
@@ -411,10 +417,11 @@ def mark_patterns(text: str, patterns: list) -> list:
 
 
 def question_qa(q: dict, frames: list) -> str:
-    """Numbered question (question-type frame red, the rest blue) + the correct option's text (green),
-    exactly as the document's key (`ans`). No A/B/C/D letters, no explanations (`expl`) or notes (`warn`)."""
+    """Numbered question (blue; with QUIZ_FRAMES its question-type frame red) + the correct option's text
+    (green), exactly as the document's key (`ans`). No A/B/C/D letters, no explanations (`expl`) or notes (`warn`)."""
     text = re.sub(r"_{3,}", "___", clean(q["q"]))
-    lines = [(FRAME_MARK if f else QUESTION_MARK) + s for f, s in mark_patterns(text, frames)]
+    segs = mark_patterns(text, frames) if QUIZ_FRAMES else [(False, text)]
+    lines = [(FRAME_MARK if f else QUESTION_MARK) + s for f, s in segs]
     lines[0] = lines[0][:3] + f"{q['n']}. " + lines[0][3:]
     return "\n".join(lines) + f"\n{ANSWER_MARK}{clean(q['opts'][q['ans']])}"
 
@@ -516,12 +523,15 @@ def speaking_item(exam: dict, expl: dict = None) -> dict:
     """Sections: one Q&A page per Part 1 topic (the first one opens with the greeting), P2 task (English) +
     sample, P3 topic + main points + sample, P3 follow-up Q&A (opened by FOLLOW_OPENER)."""
     pages = []
-    greeting = "\n".join((FRAME_MARK if frame else ANSWER_MARK) + text for frame, text in GREETING)
+    if SPEAKING_FRAMES:   # fixed phrases red, personal details green, one line each
+        greeting = "\n".join((FRAME_MARK if frame else ANSWER_MARK) + text for frame, text in GREETING)
+    else:                 # one green paragraph: "Good afternoon. My name is … I am from …"
+        greeting = ANSWER_MARK + " ".join(text for _, text in GREETING)
     for i, topic in enumerate(exam["p1"]):
         name = clean(topic["title"]).replace("Now, let's talk about", "").strip(" .")
         name = name[:1].upper() + name[1:]
         # the examiner's topic opener ("Now, let's talk about sports.") heads each topic, in question blue
-        body = QUESTION_MARK + clean(topic["title"]) + "\n\n" + "\n\n".join(qa(q["q"], q["a"]) for q in topic["qs"])
+        body = QUESTION_MARK + clean(topic["title"]) + "\n\n" + "\n\n".join(qa(k + 1, q["q"], q["a"]) for k, q in enumerate(topic["qs"]))
         if i == 0:
             body = greeting + "\n\n" + body
         pages.append(page(f"P1: {name}", body))
@@ -544,7 +554,8 @@ def speaking_item(exam: dict, expl: dict = None) -> dict:
     if p3.get("follow"):
         follow = [(f["q"], f["a"] if FOLLOW_EXPLANATIONS else drop_reason(f["q"], clean(strip_ipa(f["a"]))))
                   for f in p3["follow"]]
-        body = (FRAME_MARK if SPEAKING_FRAMES else ANSWER_MARK) + FOLLOW_OPENER + "\n\n" + "\n\n".join(qa(q, a) for q, a in follow)
+        opener = (FRAME_MARK if SPEAKING_FRAMES else ANSWER_MARK) + FOLLOW_OPENER
+        body = "\n\n".join([opener] + [qa(k + 1, q, a) for k, (q, a) in enumerate(follow)])
         pages.append(page("P3: Follow-up questions", body))
     return {"title": f'Đề {exam["id"]}', "sub": "Part 3: " + cut(p3["topic"], 40), "pages": pages}
 
