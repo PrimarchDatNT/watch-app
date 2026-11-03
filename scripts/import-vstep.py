@@ -459,19 +459,24 @@ def writing_title_t2(essay: list) -> str:
 
 
 def writing_item(exam: dict, phrases: dict) -> dict:
-    """Two pages, like Speaking's "Đề + đáp án": the short task (blue) then the full sample with its
-    template phrases red and the content green.
+    """One page per Task 1 email sample (the key has two), then the essay, like Speaking's "Đề + đáp án":
+    the short task (blue) then the full sample with its template phrases red and the content green.
     No tips/explanations (user asked)."""
     t1, t2 = exam["t1"], exam["t2"]
-    task1 = [QUESTION_MARK + simple_task1(t1["prompt"])]
-    samples = t1.get("samples") or []
-    email = (samples[0] if isinstance(samples[0], list) else [samples[0]]) if samples else []
-    text1 = "\n".join(task1) + ("\n\n" + framed_paragraphs(email, phrases["email"]) if email else "")
+    task1 = QUESTION_MARK + simple_task1(t1["prompt"])
+    emails = [s if isinstance(s, list) else [s] for s in t1.get("samples") or []]
+    pages = []
+    for k, email in enumerate(emails):
+        label = writing_title_t1(email) + (f" (mẫu {k + 1})" if k else "")
+        pages.append({"label": label, "text": task1 + "\n\n" + framed_paragraphs(email, phrases["email"])})
+    if not pages:
+        pages.append({"label": writing_title_t1([]), "text": task1})
     task2 = [QUESTION_MARK + simple_task2(t2["prompt"])]
     essay = [p["en"] for p in t2.get("essay", [])]
     text2 = "\n".join(task2) + ("\n\n" + framed_paragraphs(essay, phrases["essay"]) if essay else "")
-    pages = [{"label": writing_title_t1(email), "text": text1}, {"label": writing_title_t2(essay), "text": text2}]
-    return {"title": f'Đề {exam["id"]}', "sub": "Email + bài luận mẫu", "pages": pages}
+    pages.append({"label": writing_title_t2(essay), "text": text2})
+    sub = f"{len(emails)} email + bài luận mẫu" if len(emails) > 1 else "Email + bài luận mẫu"
+    return {"title": f'Đề {exam["id"]}', "sub": sub, "pages": pages}
 
 
 def p2_summary(p2: dict, expl: dict) -> str:

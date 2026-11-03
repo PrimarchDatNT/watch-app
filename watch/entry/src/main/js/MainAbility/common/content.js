@@ -83,11 +83,15 @@ export const CATEGORIES = [
     "items": [
       {
         "title": "Đề 7",
-        "sub": "Email + bài luận mẫu",
+        "sub": "2 email + bài luận mẫu",
         "pages": [
           {
             "label": "T1: Email to Julie",
             "text": "#Q Write an email responding to Julie.\n\n#F Dear\n#A Julie,\n\n#F It's been a while since we last talked.\n#F Thanks for your email - it really made my day.\n#F I'm writing to answer your questions about\n#A your trip to my city next month.\n\n#F Regarding\n#A the way to my house, I think you should take a taxi from the airport, because it is quick and the driver can take you right to my door. It only takes about 30 minutes and costs around 200,000 dongs. Just show the driver my address: 25 Hoang Van Thu Street.\n\n#F In terms of\n#A the weather, it will be quite cool next month, with temperatures of around 20 degrees. It may also rain a little in the afternoon, so it may feel a bit cold and wet.\n\n#F When it comes to\n#A clothes, you should bring a light jacket, some long-sleeved shirts and a pair of comfortable shoes. Don't forget an umbrella, because the weather here can change quickly.\n\n#F That's all you need to know about\n#A your trip.\n#F Drop me a line if you need more information.\n\n#F Best wishes,\n\n#A David"
+          },
+          {
+            "label": "T1: Email to Julie (mẫu 2)",
+            "text": "#Q Write an email responding to Julie.\n\n#F Dear\n#A Julie,\n\n#A How lovely to hear from you! My family and I are so excited that you're coming to stay with us next month.\n\n#A Getting to my house is easy. When you come out of the airport, you can catch bus number 86 to the city centre and then take a short taxi ride to my house. However, if you have heavy luggage, a taxi all the way is a better choice, and it's not very expensive.\n\n#A As for the weather, it's usually warm and sunny during the day next month, but it gets a bit cooler in the evening. There might be a few showers too.\n\n#A For clothes, I'd suggest packing some T-shirts, a pair of jeans and a thin jacket for the evenings. You could also bring a raincoat, just in case.\n\n#A I can't wait to see you! Let me know when your plane lands, and I'll have dinner ready for you.\n\n#F Best wishes,\n\n#A David"
           },
           {
             "label": "T2: Taking a gap year before university",
@@ -97,11 +101,15 @@ export const CATEGORIES = [
       },
       {
         "title": "Đề 12",
-        "sub": "Email + bài luận mẫu",
+        "sub": "2 email + bài luận mẫu",
         "pages": [
           {
             "label": "T1: Email to Mr. and Mrs. James",
             "text": "#Q Write an email to Mr. and Mrs. James.\n\n#F Dear\n#A Mr. and Mrs. James,\n\n#A I am a Vietnamese student and a pen friend of your nephew, Peter. I am writing to introduce myself and tell you about my plans for this summer.\n\n#F Regarding\n#A my background, I am twenty years old, and I am studying business at a university in Hanoi. In my free time, I enjoy taking photos, hiking and learning about different cultures.\n\n#F In terms of\n#A my plans, I will travel around England for three weeks in July. Peter told me that there are many beautiful lakes and old castles near Carlisle, so I would love to visit them and take some photos.\n\n#F When it comes to\n#A the time of my visit, I am planning to come to Carlisle from July 20th to July 23rd. I would appreciate it if I could stay with you for a few days, and I would also be grateful for any ideas about places to see in your area.\n\n#F I look forward to hearing from you.\n\n#F Yours sincerely,\n\n#A David"
+          },
+          {
+            "label": "T1: Email to Mr. and Mrs. James (mẫu 2)",
+            "text": "#Q Write an email to Mr. and Mrs. James.\n\n#F Dear\n#A Mr. and Mrs. James,\n\n#A I hope this email finds you well. Your nephew, Peter, is my English pen friend, and he kindly gave me your address. He has told me so much about you, so I would like to introduce myself before my visit.\n\n#A I am a second-year student from Hanoi, and I love travelling and trying new food. This summer, I am going to spend a month in England to improve my English and see as much of the country as I can.\n\n#A Peter said that you would be happy to have me for a few days, which is very kind of you. If it is convenient, I would like to visit you in the first week of August, from the 3rd to the 6th. Please let me know if these dates are not suitable for you.\n\n#A I would also be very grateful for any suggestions about what to see and do in your area, as I really want to experience life in the North of England.\n\n#A Thank you very much for your kindness, and I look forward to meeting you.\n\n#F Yours sincerely,\n\n#A David"
           },
           {
             "label": "T2: Playing computer games",
@@ -111,11 +119,15 @@ export const CATEGORIES = [
       },
       {
         "title": "Đề 17",
-        "sub": "Email + bài luận mẫu",
+        "sub": "2 email + bài luận mẫu",
         "pages": [
           {
             "label": "T1: Email to Britney",
             "text": "#Q Write an email responding to Britney.\n\n#F Dear\n#A Britney,\n\n#F Thank you very much for your email about\n#A the school trip to the history museum next month.\n#F I am writing to answer your questions about\n#A the fee, the schedule and some other details.\n\n#F Regarding\n#A the fee and the time, the trip costs 150,000 dong per student, including the bus and the entrance ticket. We will leave at 7:30 a.m. on Saturday, November 14th and come back to school at about 4 p.m.\n\n#F In terms of\n#A transport and activities, we will travel by school bus, so please meet at the school gate at 7:15 a.m. At the museum, students will join a guided tour, watch a short film about Vietnamese history and take part in a group quiz with small prizes.\n\n#F When it comes to\n#A lunch, you do not need to bring your own food, because the school will provide a simple meal for everyone. However, you should bring a bottle of water and a small notebook to take notes.\n\n#A I look forward to seeing you on the trip.\n\n#F Yours sincerely,\n\n#A David"
+          },
+          {
+            "label": "T1: Email to Britney (mẫu 2)",
+            "text": "#Q Write an email responding to Britney.\n\n#F Dear\n#A Britney,\n\n#A I am glad to hear that you are interested in our school trip to the history museum next month. Here is some information that may help you plan your time.\n\n#A The trip will take place on Saturday, November 14th. We will meet at the school gate at 7:15 a.m., and the bus will leave at 7:30, so please be on time. We expect to be back at around 4 p.m. The fee is 150,000 dong, which covers transport, entrance tickets and lunch.\n\n#A During the visit, a museum guide will show us around the main exhibitions. After that, students will work in small groups to complete a worksheet, and the best group will receive a prize.\n\n#A As lunch is included, there is no need to bring your own food. However, I would advise you to bring some snacks, a water bottle and comfortable shoes, as we will walk a lot.\n\n#A If you have any other questions, please feel free to contact me.\n\n#F Yours sincerely,\n\n#A David"
           },
           {
             "label": "T2: The shortage of qualified workers",
